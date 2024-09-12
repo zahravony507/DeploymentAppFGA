@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Test dengan QUnit</title>
+
+    <!-- load css qunit -->
+    <link rel="stylesheet" href="qunit.css">
+
+    <!-- load js qunit -->
+    <script src="qunit.js"></script>
+
+    <!-- load js function -->
+    <script src="script.js"></script>
+</head>
+
+<body>
+    <h1>Unit Test dengan QUnit</h1>
+
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+
+    <script>
+        console.log("Started Unit Testing");
+        QUnit.module('Aritmatika', function () {
+            QUnit.test('Penjumlahan', function (assert) {
+                assert.equal(add(1, 1), 2, '1 + 1 hasilnya adalah 2');
+                assert.equal(add(-1, 1), 0, '-1 + 1 hasilnya adalah 1');
+            });
+            QUnit.test('Pengurangan', function (assert) {
+                assert.equal(subtract(2, 1), 1, '2 - 1 hasilnya adalah 1');
+                assert.equal(subtract(0, 1), -1, '0 - 1 hasilnya adalah -1');
+            });
+            QUnit.test('Perkalian', function (assert) {
+                assert.equal(multiply(2, 2), 4, '2 * 2 hasilnya adalah 4');
+                assert.equal(multiply(-2, 3), -6, '-2 * 3 hasilnya adalah -6');
+            });
+            QUnit.test('Pembagian', function (assert) {
+                assert.equal(divide(6, 3), 2, '6 / 3 hasilnya adalah 2');
+                assert.throws(function () {
+                    divide(1, 0);
+                }, /Division by zero/, 'Pembagian yang hasilnya adalah 0 akan memberikan error.');
+            });
+        });
+
+        QUnit.module('API', function () {
+            QUnit.test('Mengambil Data di API', function (assert) {
+                var done = assert.async();
+                getAPI('https://jsonplaceholder.typicode.com/posts/1', function (data) {
+                    assert.equal(data.userId, 1, 'userId adalah 1');
+                    assert.equal(data.title, 'sunt aut facere repellat provident occaecati excepturi optio reprehenderit', 'title adalah sunt aut facere repellat provident occaecati excepturi optio reprehenderit');
+                    done();
+                });
+            });
+        });
+        QUnit.module('Function', function () {
+            QUnit.test('Check Function Nama', function (assert) {
+                assert.equal(isNameValid(''), false, 'Nama tidak boleh kosong!');
+                assert.equal(isNameValid('Arif'), true, 'Nama anda Arif.');
+            });
+        });
+        QUnit.module('DOM', function () {
+            QUnit.test('Tambah element di DIV', function (assert) {
+                // start
+                var done = assert.async();
+                var element = document.createElement('div');
+                element.id = 'test'
+                document.body.appendChild(element);
+
+                assert.ok(document.getElementById('test'), 'Document dengan element div berhasil dibuat.');
+                // end/finish
+                done();
+            });
+        });
+    </script>
+</body>
+
+</html>
